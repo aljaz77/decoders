@@ -1,7 +1,7 @@
 {
   "$schema": "../../../../../schema/connector_details.json",
   "description": "../description.md",
-  "install_text": "Food simulant LoRaWAN sensor for HACCP compliance. Monitors dual temperature readings that reflect thermal inertia. DASHBOARD: https://admin.tago.io/template/6a707c6e2a7e4d000b5e0b65?host=api.eu-w1.tago.io",
+  "install_text": "Food simulant LoRaWAN sensor for HACCP compliance. Monitors dual temperature readings that reflect thermal inertia.\n\nDASHBOARD: https://admin.tago.io/template/6a707c6e2a7e4d000b5e0b65?host=api.eu-w1.tago.io",
   "device_annotation": "DASHBOARD: https://admin.tago.io/template/6a707c6e2a7e4d000b5e0b65?host=api.eu-w1.tago.io",
   "device_parameters": [],
   "networks": [

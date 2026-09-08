@@ -1,7 +1,7 @@
 {
   "$schema": "../../../../../schema/connector_details.json",
   "description": "../description.md",
-  "install_text": "LoRaWAN food probe sensor. Measures food storage and cooking temperature.",
+  "install_text": "LoRaWAN food probe sensor. Measures food storage and cooking temperature.\n\nDASHBOARD: <dashboard will be added soon>",
   "device_annotation": "",
   "device_parameters": [],
   "networks": [

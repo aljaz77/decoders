@@ -1,7 +1,7 @@
 {
   "$schema": "../../../../../schema/connector_details.json",
   "description": "../description.md",
-  "install_text": "Senstick SRM10 - Rain gauge sensor",
+  "install_text": "LoRaWAN tipping-bucket rain gauge sensor. Collects rainfall metering data.\n\nDASHBOARD: <dashboard will be added soon>",
   "device_annotation": "",
   "device_parameters": [],
   "networks": [
