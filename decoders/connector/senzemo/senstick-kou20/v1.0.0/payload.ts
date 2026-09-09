@@ -5,25 +5,14 @@ function isValidFrameSize(length: number): boolean {
   return VALID_FRAME_SIZES.includes(length);
 }
 
-// Networks disagree on how they hand over the raw frame:
-//   `payload`     - most networks, hex
-//   `payload_raw` - generic/legacy naming, hex
-//   `frm_payload` - TTI/TTN v3, hex, used instead of `payload` when the device
-//                   also has a TTN-side formatter producing `decoded_payload`
-//   `data`        - ChirpStack and BrDot, base64
-//   `dataFrame`   - Orbiwise, base64
+// Raw frame arrives hex-encoded in `payload`/`payload_raw`/`frm_payload`, or base64 in
+// `data`/`dataFrame`, and the port under four different spellings, depending on network.
 const RAW_VARIABLES = ["payload_raw", "payload", "frm_payload", "data", "dataframe"];
 const BASE64_VARIABLES = ["data", "dataframe"];
-
-// Networks also disagree on the port's name and casing: `port` (Everynet, Helium,
-// Loriot, Senet, Senra, Orbiwise), `fport` (Actility, Swisscom, Kerlink, Tektelic,
-// TTI/TTN v3), `fPort` (ChirpStack, BrDot, CityKinect) and `FPort` (machineQ).
 const PORT_VARIABLES = ["port", "fport", "f_port"];
 
-// Buffer.from() silently discards characters it cannot parse, so a wrong guess about the
-// encoding yields a short buffer rather than an error. Re-encoding and comparing rejects
-// that, and preferring a candidate whose length is a real frame size settles the strings
-// that happen to be valid hex *and* valid base64.
+// Buffer.from() silently drops characters it cannot parse, so the guess is confirmed by
+// re-encoding; a string valid as both hex and base64 is settled by which length is a frame size.
 function decodeRawFrame(value: string, variable: string): Buffer {
   const encodings: BufferEncoding[] = BASE64_VARIABLES.includes(variable.toLowerCase())
     ? ["base64", "hex"]
