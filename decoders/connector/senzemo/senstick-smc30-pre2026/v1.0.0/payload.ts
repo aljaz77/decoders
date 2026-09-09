@@ -67,14 +67,68 @@ function smc30Decode(bytes: Buffer, port: number, group: string, time: Date): De
   return decodeConfigPacket(bytes, group, time);
 }
 
-const payload_raw = payload.find((x) => ["payload_raw", "payload", "data"].includes(x.variable));
-const port_variable = payload.find((x) => x.variable === "port");
+// This decoder accepts any frame of at least 8 bytes (data) / 9 bytes (config),
+// so the smallest accepted size is what makes a candidate decoding plausible.
+const MIN_FRAME_SIZE = 8;
+
+function isValidFrameSize(length: number): boolean {
+  return length >= MIN_FRAME_SIZE;
+}
+
+// Networks disagree on how they hand over the raw frame:
+//   `payload`     - most networks, hex
+//   `payload_raw` - generic/legacy naming, hex
+//   `frm_payload` - TTI/TTN v3, hex, used instead of `payload` when the device
+//                   also has a TTN-side formatter producing `decoded_payload`
+//   `data`        - ChirpStack and BrDot, base64
+//   `dataFrame`   - Orbiwise, base64
+const RAW_VARIABLES = ["payload_raw", "payload", "frm_payload", "data", "dataframe"];
+const BASE64_VARIABLES = ["data", "dataframe"];
+
+// Networks also disagree on the port's name and casing: `port` (Everynet, Helium,
+// Loriot, Senet, Senra, Orbiwise), `fport` (Actility, Swisscom, Kerlink, Tektelic,
+// TTI/TTN v3), `fPort` (ChirpStack, BrDot, CityKinect) and `FPort` (machineQ).
+const PORT_VARIABLES = ["port", "fport", "f_port"];
+
+// Buffer.from() silently discards characters it cannot parse, so a wrong guess about the
+// encoding yields a short buffer rather than an error. Re-encoding and comparing rejects
+// that, and preferring a candidate whose length is a real frame size settles the strings
+// that happen to be valid hex *and* valid base64.
+function decodeRawFrame(value: string, variable: string): Buffer {
+  const encodings: BufferEncoding[] = BASE64_VARIABLES.includes(variable.toLowerCase())
+    ? ["base64", "hex"]
+    : ["hex", "base64"];
+
+  let fallback: Buffer | undefined;
+  for (const encoding of encodings) {
+    const bytes = Buffer.from(value, encoding);
+    const canonical = encoding === "hex" ? value.toLowerCase() : value;
+    if (!bytes.length || bytes.toString(encoding) !== canonical) {
+      continue;
+    }
+    if (isValidFrameSize(bytes.length)) {
+      return bytes;
+    }
+    fallback = fallback ?? bytes;
+  }
+
+  if (!fallback) {
+    throw new Error(`Could not decode "${variable}" as hex or base64`);
+  }
+  return fallback;
+}
+
+const payload_raw = payload.find(
+  (x) => RAW_VARIABLES.includes(String(x.variable).toLowerCase()) && typeof x.value === "string",
+);
+const port_variable = payload.find((x) => PORT_VARIABLES.includes(String(x.variable).toLowerCase()));
 
 if (payload_raw) {
   try {
-    const bytes = Buffer.from(payload_raw.value as string, "hex");
+    const bytes = decodeRawFrame(payload_raw.value as string, payload_raw.variable as string);
     const port = port_variable ? Number(port_variable.value) : 0;
-    const group = `${new Date().getTime()}-${Math.random().toString(36).substring(2, 5)}`;
+    // Keep the decoded variables in the same group as the network metadata (rssi, snr, ...)
+    const group = payload_raw.group || `${new Date().getTime()}-${Math.random().toString(36).substring(2, 5)}`;
     const time = new Date();
 
     const parsed = smc30Decode(bytes, port, group, time);

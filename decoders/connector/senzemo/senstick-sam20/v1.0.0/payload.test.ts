@@ -221,6 +221,133 @@ describe("Senstick SAM20 - config packet decode (port 3)", () => {
   });
 });
 
+describe("Senstick SAM20 - TTN/TTI v3 network output (frm_payload + fport)", () => {
+  beforeEach(() => {
+    payload = [
+      { variable: "frm_payload", value: "09331a3f26b3062f", group: "1788954660609" },
+      { variable: "fport", value: 2, group: "1788954660609" },
+    ];
+    payload = decoderRun(file_path, { payload });
+  });
+
+  test("Decodes temperature correctly", () => {
+    const temperature = payload.find((x) => x.variable === "temperature");
+    expect(temperature?.value).toBe(23.55);
+  });
+
+  test("Decodes humidity correctly", () => {
+    const humidity = payload.find((x) => x.variable === "humidity");
+    expect(humidity?.value).toBe(67.19);
+  });
+
+  test("Decodes air pressure correctly", () => {
+    const air_pressure = payload.find((x) => x.variable === "air_pressure");
+    expect(air_pressure?.value).toBe(990.7);
+  });
+
+  test("Decodes battery level correctly", () => {
+    const battery_level = payload.find((x) => x.variable === "battery_level");
+    expect(battery_level?.value).toBe(1583);
+  });
+
+  test("Keeps the group of the incoming network data", () => {
+    const temperature = payload.find((x) => x.variable === "temperature");
+    expect(temperature?.group).toBe("1788954660609");
+  });
+});
+
+describe("Senstick SAM20 - ChirpStack/BrDot network output (base64 `data` + `fPort`)", () => {
+  beforeEach(() => {
+    payload = [
+      { variable: "data", value: "CTMaPyazBi8=", group: "222" },
+      { variable: "fPort", value: 2, group: "222" },
+    ];
+    payload = decoderRun(file_path, { payload });
+  });
+
+  test("Decodes base64 temperature correctly", () => {
+    const temperature = payload.find((x) => x.variable === "temperature");
+    expect(temperature?.value).toBe(23.55);
+  });
+
+  test("Decodes base64 air pressure correctly", () => {
+    const air_pressure = payload.find((x) => x.variable === "air_pressure");
+    expect(air_pressure?.value).toBe(990.7);
+  });
+});
+
+describe("Senstick SAM20 - Orbiwise network output (base64 `dataFrame` + `port`)", () => {
+  beforeEach(() => {
+    payload = [
+      { variable: "dataFrame", value: "CTMaPyazBi8=", group: "333" },
+      { variable: "port", value: 2, group: "333" },
+    ];
+    payload = decoderRun(file_path, { payload });
+  });
+
+  test("Decodes humidity correctly", () => {
+    const humidity = payload.find((x) => x.variable === "humidity");
+    expect(humidity?.value).toBe(67.19);
+  });
+});
+
+describe("Senstick SAM20 - machineQ network output (`FPort` as a string)", () => {
+  beforeEach(() => {
+    payload = [
+      { variable: "payload", value: "09331a3f26b3062f", group: "444" },
+      { variable: "FPort", value: "2", group: "444" },
+    ];
+    payload = decoderRun(file_path, { payload });
+  });
+
+  test("Decodes battery level correctly", () => {
+    const battery_level = payload.find((x) => x.variable === "battery_level");
+    expect(battery_level?.value).toBe(1583);
+  });
+
+  test("Treats the string port as port 2, not debug firmware", () => {
+    const debug_firmware = payload.find((x) => x.variable === "debug_firmware");
+    expect(debug_firmware?.value).toBe(false);
+  });
+});
+
+describe("Senstick SAM20 - hex frame that is also valid base64", () => {
+  beforeEach(() => {
+    // "092e119427940e10" is legal base64 (decodes to 12 bytes) as well as legal hex (8 bytes).
+    // Only the hex reading is a valid SAM20 frame size, so that is the one that must win.
+    payload = [
+      { variable: "data", value: "092e119427940e10", group: "555" },
+      { variable: "fPort", value: 2, group: "555" },
+    ];
+    payload = decoderRun(file_path, { payload });
+  });
+
+  test("Falls back to the hex reading", () => {
+    const temperature = payload.find((x) => x.variable === "temperature");
+    expect(temperature?.value).toBe(23.5);
+  });
+
+  test("Does not report a parse error", () => {
+    const parse_error = payload.find((x) => x.variable === "parse_error");
+    expect(parse_error).toBeUndefined();
+  });
+});
+
+describe("Senstick SAM20 - undecodable raw frame", () => {
+  beforeEach(() => {
+    payload = [
+      { variable: "payload", value: "zzzz!!", group: "666" },
+      { variable: "port", value: 2, group: "666" },
+    ];
+    payload = decoderRun(file_path, { payload });
+  });
+
+  test("Reports a parse error instead of decoding garbage", () => {
+    const parse_error = payload.find((x) => x.variable === "parse_error");
+    expect(parse_error?.value).toBe('Could not decode "payload" as hex or base64');
+  });
+});
+
 describe("Shall not be parsed", () => {
   beforeEach(() => {
     payload = [{ variable: "shallnotpass", value: "04096113950292" }];
