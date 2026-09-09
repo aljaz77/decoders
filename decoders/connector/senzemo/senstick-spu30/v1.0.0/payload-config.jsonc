@@ -1,7 +1,7 @@
 {
   "$schema": "../../../../../schema/connector_details.json",
   "description": "../description.md",
-  "install_text": "LoRaWAN indoor air quality sensor measuring temperature, humidity, air pressure, CO2, and TVOC.",
+  "install_text": "**Senspuck Pure SPU30**\n\nLoRaWAN indoor air quality sensor measuring temperature, humidity, air pressure, CO2, and TVOC.\n\n**Key features:**\n\n- LoRaWAN end-to-end encryption and data integrity protection\n- CO2 sensor accuracy (±30ppm)\n- TVOC sensor accuracy (±0.5mg/m3)\n- Temperature sensor accuracy (±0.2°C)\n- Humidity sensor accuracy (±1.8%)\n- Air pressure sensor accuracy (±1hPa)\n- Up to 7 years of battery life without TVOC logging\n- Default sending interval of 12 minutes, configurable via downlink\n- Li-Ion battery for long-term autonomous operation",
   "device_annotation": "",
   "device_parameters": [],
   "networks": [
