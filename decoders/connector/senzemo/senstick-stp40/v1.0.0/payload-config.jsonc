@@ -1,7 +1,7 @@
 {
   "$schema": "../../../../../schema/connector_details.json",
   "description": "../description.md",
-  "install_text": "Industrial LoRaWAN temperature probe sensor. Suitable for use across a range of industries.\n\nDASHBOARD: <dashboard will be added soon>",
+  "install_text": "Industrial LoRaWAN temperature probe sensor. Suitable for use across a range of industries.",
   "device_annotation": "",
   "device_parameters": [],
   "networks": [
