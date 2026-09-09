@@ -1,8 +1,8 @@
 {
   "$schema": "../../../../../schema/connector_details.json",
   "description": "../description.md",
-  "install_text": "Ambient LoRaWAN sensor. Collects temperature, relative humidity, and air pressure data. Suitable for indoor environments such as museums, archives, HVAC systems, and data centers.\n\nDASHBOARD: <dashboard will be added soon>",
-  "device_annotation": "",
+  "install_text": "Ambient LoRaWAN sensor. Collects temperature, relative humidity, and air pressure data. Suitable for indoor environments such as museums, archives, HVAC systems, and data centers.\n\nDASHBOARD: https://admin.legacy.tago.io/template/6a9fd2358592a5000b252703",
+  "device_annotation": "DASHBOARD: https://admin.legacy.tago.io/template/6a9fd2358592a5000b252703",
   "device_parameters": [],
   "networks": [
     "../../../../network/lorawan-actility/v1.0.0/payload.js",
