@@ -1,7 +1,7 @@
 {
   "$schema": "../../../../../schema/connector_details.json",
   "description": "../description.md",
-  "install_text": "**Senstick Ambient SAM20**\n\nAmbient LoRaWAN sensor. Collects temperature, relative humidity, and air pressure data. Suitable for indoor environments such as museums, archives, HVAC systems, and data centers.\n\n**Key features:**\n\n- LoRaWAN end-to-end encryption and data integrity protection\n- Monitors temperature, relative humidity, and air pressure\n- Built in tampering detection\n- Up to 7 years of battery life with a single AA alkaline battery\n- IP20 rated enclosure (indoor use)\n- NFC or over-the-air reconfiguration\n- Internal data logging up to 40 days (prevents data loss on weak connections)\n- Can be configured remotely or locally with Senzemo app\n\nDASHBOARD: https://admin.legacy.tago.io/template/6a9fd2358592a5000b252703",
+  "install_text": "**Senstick Ambient SAM20**\n\nA discreet LoRaWAN ambient sensor for rapid deployment and reliable monitoring of temperature, relative humidity, and air pressure.\n\n**Key features:**\n\n- LoRaWAN end-to-end encryption and data integrity protection\n- High accuracy temperature sensor (±0.4%)\n- Built in tampering detection\n- Up to 7 years of battery life\n- Diverse mounting options (screws, backplate, tape, nail)\n- Internal data logging up to 40 days (prevents data loss on weak connections)\n- Easily replaceable 2x AAA batteries\n- Can be configured remotely or locally with Senzemo app\n\nDASHBOARD: https://admin.legacy.tago.io/template/6a9fd2358592a5000b252703",
   "device_annotation": "DASHBOARD: https://admin.legacy.tago.io/template/6a9fd2358592a5000b252703",
   "device_parameters": [],
   "networks": [
