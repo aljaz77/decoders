@@ -1,7 +1,7 @@
 {
   "$schema": "../../../../../schema/connector_details.json",
   "description": "../description.md",
-  "install_text": "**Senstick KOU20**\n\nLoRaWAN compost temperature sensor for waste management sites. Monitors compost pile temperature to support composting process control.\n\n**Key features:**\n\n- LoRaWAN end-to-end encryption and data integrity protection\n- Temperature probe accuracy (±1°C)\n- Built in accelerometer for movement detection\n- Up to 7 years of battery life\n- IP68 rated aluminum probe casing for harsh environments\n- Custom probe lengths available on request\n- Easily replaceable AA battery\n- Can be configured remotely or locally with Senzemo app",
+  "install_text": "**Senstick KOU20**\n\nLoRaWAN compost temperature sensor for waste management sites. Monitors compost pile temperature to support composting process control.\n\n**Key features:**\n\n- LoRaWAN end-to-end encryption and data integrity protection\n- Monitors temperature\n- Built in accelerometer for movement detection\n- Long battery life\n- Aluminum probe casing for harsh environments\n- Custom probe lengths available on request\n- Easily replaceable AA battery\n- Can be configured remotely or locally with Senzemo app",
   "device_annotation": "",
   "device_parameters": [],
   "networks": [
