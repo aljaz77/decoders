@@ -55,7 +55,7 @@ function decodeDataPacket(bytes: Buffer, port: number, group: string, time: Date
     { variable: "temperature", value: temperatureRaw / 100, unit: "°C", group, time },
     { variable: "humidity", value: humidityRaw / 100, unit: "%RH", group, time },
     { variable: "air_pressure", value: airPressureRaw / 10, unit: "hPa", group, time },
-    { variable: "battery_level", value: batteryLevel, unit: "", group, time },
+    { variable: "battery_level", value: batteryLevel, unit: "mV", group, time },
     { variable: "debug_firmware", value: port === 4, unit: "", group, time },
   ];
 
